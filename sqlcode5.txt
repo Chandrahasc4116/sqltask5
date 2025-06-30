@@ -156,4 +156,4 @@ Dinesh                                             Technical
                                                    Testing                                                                                                                                                                                                                                                  
 Hemanth                                            Maintainance                                                                                                                                                                                                                                             
 
-SQL> spool off;
+
