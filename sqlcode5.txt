@@ -1,0 +1,159 @@
+SQL> desc employee
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(5)
+ NAME                                               VARCHAR2(50)
+ GENDER                                             CHAR(1)
+ MOBILENO                                           NUMBER(10)
+ ADDRESS                                            VARCHAR2(60)
+ DEPTNO                                             NUMBER(1)
+
+SQL> create table department(dno number(1),dname varchar(30), mgr_empid number(5));
+
+Table created.
+
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DNO                                                NUMBER(1)
+ DNAME                                              VARCHAR2(30)
+ MGR_EMPID                                          NUMBER(5)
+
+SQL> alter table employee add primary key(EMPID);
+
+Table altered.
+
+SQL> alter table department add primary key(dno);
+
+Table altered.
+
+SQL> insert into department values(2,'Technical',12121);
+
+1 row created.
+
+SQL> insert into department values(3,'Testing',12321);
+
+1 row created.
+
+SQL> insert into department values(6,'Maintainance',14321);
+
+1 row created.
+
+SQL> set linesize 300;
+SQL> select * from department;
+
+       DNO DNAME                           MGR_EMPID                                                                                                                                                                                                                                                        
+---------- ------------------------------ ----------                                                                                                                                                                                                                                                        
+         2 Technical                           12121                                                                                                                                                                                                                                                        
+         3 Testing                             12321                                                                                                                                                                                                                                                        
+         6 Maintainance                        14321                                                                                                                                                                                                                                                        
+
+SQL> alter table employee add foreign key(deptno) references department(dno);
+
+Table altered.
+
+
+SQL> select * from employee;
+
+no rows selected
+
+SQL> select * from department;
+
+       DNO DNAME                           MGR_EMPID                                                                                                                                                                                                                                                        
+---------- ------------------------------ ----------                                                                                                                                                                                                                                                        
+         2 Technical                           12121                                                                                                                                                                                                                                                        
+         3 Testing                             12321                                                                                                                                                                                                                                                        
+         6 Maintainance                        14321                                                                                                                                                                                                                                                        
+
+SQL> desc employee;
+ Name                                                                                                                                                                          Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------- --------------------------------------------------------------------------------------------------------------------
+ EMPID                                                                                                                                                                         NOT NULL NUMBER(5)
+ NAME                                                                                                                                                                                   VARCHAR2(50)
+ GENDER                                                                                                                                                                                 CHAR(1)
+ MOBILENO                                                                                                                                                                               NUMBER(10)
+ ADDRESS                                                                                                                                                                                VARCHAR2(60)
+ DEPTNO                                                                                                                                                                                 NUMBER(1)
+
+SQL> select * from employee;
+
+no rows selected
+
+SQL> insert into employee values(12345,'Dinesh','M',9191191919,'Punganur',2);
+
+1 row created.
+
+SQL> insert into employee values(12346,'Hemanth','M',8191191919,'Banglore',6);
+
+1 row created.
+
+SQL> select * from employee;
+
+     EMPID NAME                                               G   MOBILENO ADDRESS                                                          DEPTNO                                                                                                                                                          
+---------- -------------------------------------------------- - ---------- ------------------------------------------------------------ ----------                                                                                                                                                          
+     12345 Dinesh                                             M 9191191919 Punganur                                                              2                                                                                                                                                          
+     12346 Hemanth                                            M 8191191919 Banglore                                                              6                                                                                                                                                          
+
+SQL> select name,mobileno from employee inner join department on deptno=dno;
+
+NAME                                                 MOBILENO                                                                                                                                                                                                                                               
+-------------------------------------------------- ----------                                                                                                                                                                                                                                               
+Dinesh                                             9191191919                                                                                                                                                                                                                                               
+Hemanth                                            8191191919                                                                                                                                                                                                                                               
+
+SQL> select name,mobileno from employee inner join department on deptno=dno where dno=2;
+
+NAME                                                 MOBILENO                                                                                                                                                                                                                                               
+-------------------------------------------------- ----------                                                                                                                                                                                                                                               
+Dinesh                                             9191191919                                                                                                                                                                                                                                               
+
+SQL> select name,mobileno from employee left outer join department on deptno=dno;
+
+NAME                                                 MOBILENO                                                                                                                                                                                                                                               
+-------------------------------------------------- ----------                                                                                                                                                                                                                                               
+Dinesh                                             9191191919                                                                                                                                                                                                                                               
+Hemanth                                            8191191919                                                                                                                                                                                                                                               
+
+SQL> select name,mobileno from employee left outer join department on deptno=dno where dno=2;
+
+NAME                                                 MOBILENO                                                                                                                                                                                                                                               
+-------------------------------------------------- ----------                                                                                                                                                                                                                                               
+Dinesh                                             9191191919                                                                                                                                                                                                                                               
+
+SQL> select name,dname from employee left outer join department on deptno=dno where dno=2;
+
+NAME                                               DNAME                                                                                                                                                                                                                                                    
+-------------------------------------------------- ------------------------------                                                                                                                                                                                                                           
+Dinesh                                             Technical                                                                                                                                                                                                                                                
+
+SQL> select name,dname from employee left outer join department on deptno=dno where dno=5;
+
+no rows selected
+
+SQL> select name,dname from employee left outer join department on deptno=dno where dno=6;
+
+NAME                                               DNAME                                                                                                                                                                                                                                                    
+-------------------------------------------------- ------------------------------                                                                                                                                                                                                                           
+Hemanth                                            Maintainance                                                                                                                                                                                                                                             
+
+SQL> select name,dname from employee right outer join department on deptno=dno where dno=6;
+
+NAME                                               DNAME                                                                                                                                                                                                                                                    
+-------------------------------------------------- ------------------------------                                                                                                                                                                                                                           
+Hemanth                                            Maintainance                                                                                                                                                                                                                                             
+
+SQL> select name,dname from employee full outer join department on deptno=dno where dno=6;
+
+NAME                                               DNAME                                                                                                                                                                                                                                                    
+-------------------------------------------------- ------------------------------                                                                                                                                                                                                                           
+Hemanth                                            Maintainance                                                                                                                                                                                                                                             
+
+SQL> select name,dname from employee full outer join department on deptno=dno;
+
+NAME                                               DNAME                                                                                                                                                                                                                                                    
+-------------------------------------------------- ------------------------------                                                                                                                                                                                                                           
+Dinesh                                             Technical                                                                                                                                                                                                                                                
+                                                   Testing                                                                                                                                                                                                                                                  
+Hemanth                                            Maintainance                                                                                                                                                                                                                                             
+
+SQL> spool off;
